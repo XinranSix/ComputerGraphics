@@ -1,40 +1,52 @@
 #pragma once
 
-#include <string>
-#include <string_view>
+#include <cstddef>
+#include <filesystem>
+#include <utility>
 
 namespace CG {
 
     class Image {
 
-        enum class Format { None = 0, RGBA, RGBA32F };
-
     public:
-        Image(std::string_view path);
+        Image(const std::filesystem::path& path);
 
-        Image(uint32_t width, uint32_t height, Format format, const void* data = nullptr);
+        Image(uint32_t width = 0, uint32_t height = 0, uint32_t channels = 0, const void* data = nullptr);
 
-        ~Image();
+        Image(const Image& other);
 
-        void SetData(const void* data);
+        Image& operator=(const Image& rhs);
 
-        // VkDescriptorSet GetDescriptorSet() const { return m_DescriptorSet; }
+        Image(Image&& other) noexcept;
 
-        void Resize(uint32_t width, uint32_t height);
+        Image& operator=(Image&& rhs) noexcept;
+
+        ~Image() noexcept;
+
+        void SetData(uint32_t width = 0, uint32_t height = 0, uint32_t channels = 0, const void* data = nullptr);
+
+        // void Resize(uint32_t width, uint32_t height);
+
+        void Save(std::filesystem::path path = "output.png");
 
         inline uint32_t GetWidth() const { return width_; }
         inline uint32_t GetHeight() const { return height_; }
 
+        friend void swap(Image& first, Image& second) noexcept { first.swap(second); }
+
     private:
-        // void AllocateMemory(uint64_t size);
-        // void Release();
+        void swap(Image& other) noexcept {
+            std::swap(width_, other.width_);
+            std::swap(height_, other.width_);
+            std::swap(channels_, other.channels_);
+            std::swap(data_, other.data_);
+        }
 
     private:
         uint32_t width_ {};
         uint32_t height_ {};
+        uint32_t channels_ {};
 
         std::byte* data_ {};
-
-        std::string filepath_;
     };
 } // namespace CG

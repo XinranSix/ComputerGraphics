@@ -1,1 +1,2 @@
 includes("indicators")
+includes("core")
