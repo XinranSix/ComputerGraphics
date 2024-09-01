@@ -1,4 +1,4 @@
-#include <cstring>
+#include <algorithm>
 #include <utility>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -12,16 +12,9 @@
 
 namespace CG {
     Image::Image(const std::filesystem::path& path) {
-        int x, y, n;
+        int x {}, y {}, n {};
         unsigned char* data = stbi_load(path.string().c_str(), &x, &y, &n, 0);
-        if (!data) {
-            return;
-        }
-        std::exchange(width_, x);
-        std::exchange(height_, y);
-        std::exchange(channels_, n);
-        data_ = new std::byte[width_ * height_ * channels_];
-        memcpy(data_, data, width_ * height_ * channels_);
+        SetData(x, y, n, data);
         stbi_image_free(data);
     }
 
@@ -29,16 +22,10 @@ namespace CG {
         SetData(width, height, channels, data);
     }
 
-    Image::Image(const Image& other) {
-        std::exchange(width_, other.width_);
-        std::exchange(height_, other.height_);
-        std::exchange(channels_, other.channels_);
-        data_ = new std::byte[width_ * height_ * channels_];
-        memcpy(data_, other.data_, width_ * height_ * channels_);
-    }
+    Image::Image(const Image& other) { SetData(other.width_, other.height_, other.channels_, other.data_); }
 
     Image& Image::operator=(const Image& rhs) {
-        Image tmp(rhs);
+        Image tmp { rhs };
         swap(tmp);
         return *this;
     }
@@ -50,33 +37,30 @@ namespace CG {
         return *this;
     }
 
-    Image::~Image() noexcept {
-        delete[] data_;
-        std::exchange(width_, 0);
-        std::exchange(height_, 0);
-        std::exchange(channels_, 0);
-        std::exchange(data_, nullptr);
-    }
+    Image::~Image() noexcept { SetData(); }
 
     void Image::SetData(uint32_t width, uint32_t height, uint32_t channels, const void* data) {
+        delete[] data_;
         if (!data) {
+            std::exchange(width_, 0);
+            std::exchange(height_, 0);
+            std::exchange(channels_, 0);
+            std::exchange(data_, nullptr);
             return;
         }
         std::exchange(width_, width);
         std::exchange(height_, height);
         std::exchange(channels_, channels);
-        delete[] data_;
         data_ = new std::byte[width_ * height_ * channels_];
-        memcpy(data_, data, width_ * height_ * channels_);
+        std::copy(reinterpret_cast<const std::byte*>(data),
+                  reinterpret_cast<const std::byte*>(data) + width_ * height_ * channels_, data_);
     }
 
     void Image::Resize(uint32_t width, uint32_t height) {
         std::byte* resized_data = new std::byte[width * height * channels_];
-
         stbir_resize_uint8_linear(reinterpret_cast<const unsigned char*>(data_), width_, height_, width_ * channels_,
                                   reinterpret_cast<unsigned char*>(resized_data), width, height, width * channels_,
                                   static_cast<stbir_pixel_layout>(channels_));
-
         SetData(width, height, channels_, resized_data);
     }
 
