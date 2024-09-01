@@ -1,7 +1,7 @@
 #include <format>
 
+#include "graphics_api/opengl/renderer/opengl_debug.h"
 #include "imgui.h"
-#include "opengl/opengl_debug.h"
 #include "sandbox_layer.h"
 
 SandboxLayer::SandboxLayer() {}

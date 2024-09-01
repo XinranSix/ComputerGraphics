@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/events/mouse_event.h"
-#include "core/layer.h"
+#include "core/app/layer.h"
+#include "events/mouse_event.h"
 
 namespace CG {
 

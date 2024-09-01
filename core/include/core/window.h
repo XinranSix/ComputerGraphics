@@ -3,7 +3,7 @@
 #include <functional>
 #include <string>
 
-#include "core/events/event.h"
+#include "events/event.h"
 
 namespace CG {
 

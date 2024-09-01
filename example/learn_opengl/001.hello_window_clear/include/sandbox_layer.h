@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "core/events/event.h"
-#include "core/layer.h"
+#include "core/app/layer.h"
 #include "core/timestep.h"
-#include "opengl/framebuffer.h"
+#include "events/event.h"
+#include "graphics_api/opengl/renderer/framebuffer.h"
 
 class SandboxLayer : public CG::Layer {
 public:

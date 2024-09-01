@@ -65,6 +65,7 @@ add_requires("spdlog", {configs = {header_only = false}})
 add_requires("fmt") 
 
 add_requires("box2d") 
+add_requires("bullet3") 
 
 add_requires("indicators")  -- 进度条
 

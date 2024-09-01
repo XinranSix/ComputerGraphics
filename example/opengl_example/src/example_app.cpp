@@ -1,4 +1,4 @@
-#include "core/application.h"
+#include "core/app/application.h"
 #include "example_layer.h"
 
 class Example : public CG::Application {

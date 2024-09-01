@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/events/event.h"
-#include "core/layer.h"
+#include "core/app/layer.h"
 #include "core/timestep.h"
+#include "events/event.h"
 
 class SandboxLayer : public CG::Layer {
 public:
@@ -14,6 +14,4 @@ public:
     virtual void OnEvent(CG::Event& event) override;
     virtual void OnUpdate(CG::Timestep ts) override;
     virtual void OnImGuiRender() override;
-
-private:
 };

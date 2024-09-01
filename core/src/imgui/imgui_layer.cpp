@@ -9,7 +9,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_opengl3_loader.h>
 
-#include "core/application.h"
+#include "core/app/application.h"
 #include "imgui/imgui_layer.h"
 
 namespace CG {

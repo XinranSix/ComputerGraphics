@@ -1,4 +1,4 @@
-#include "core/application.h"
+#include "core/app/application.h"
 #include "sandbox_layer.h"
 
 class Sandbox : public CG::Application {
