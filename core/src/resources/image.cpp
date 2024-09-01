@@ -70,16 +70,30 @@ namespace CG {
         memcpy(data_, data, width_ * height_ * channels_);
     }
 
-    /*   void Image::Resize(uint32_t width, uint32_t height) {
-          std::byte* resized_data = new std::byte[width * height * channels_];
-          stbir_resize_uint8_linear(data_, width_, height_, 0, resized_data, width, height, 0, channels_);
-          delete[] data_;
-          data_ = resized_data;
-          std::exchange(width_, width);
-          std::exchange(height_, height);
-      }
-   */
-    void Image::Save(std::filesystem::path path) {
+    void Image::Resize(uint32_t width, uint32_t height) {
+        std::byte* resized_data = new std::byte[width * height * channels_];
+
+        stbir_resize_uint8_linear(reinterpret_cast<const unsigned char*>(data_), width_, height_, width_ * channels_,
+                                  reinterpret_cast<unsigned char*>(resized_data), width, height, width * channels_,
+                                  static_cast<stbir_pixel_layout>(channels_));
+
+        SetData(width, height, channels_, resized_data);
+    }
+
+    void Image::SaveAsPNG(std::filesystem::path path) {
         stbi_write_png(path.string().c_str(), width_, height_, channels_, data_, width_ * channels_);
     }
+
+    void Image::SaveAsBMP(std::filesystem::path path) {
+        stbi_write_bmp(path.string().c_str(), width_, height_, channels_, data_);
+    }
+
+    void Image::SaveAsTGA(std::filesystem::path path) {
+        stbi_write_tga(path.string().c_str(), width_, height_, channels_, data_);
+    }
+
+    void Image::SaveAsJPG(std::filesystem::path path) {
+        stbi_write_jpg(path.string().c_str(), width_, height_, channels_, data_, 100);
+    }
+
 } // namespace CG

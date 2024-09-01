@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <filesystem>
-#include <utility>
 
 namespace CG {
 
@@ -25,12 +24,17 @@ namespace CG {
 
         void SetData(uint32_t width = 0, uint32_t height = 0, uint32_t channels = 0, const void* data = nullptr);
 
-        // void Resize(uint32_t width, uint32_t height);
+        void Resize(uint32_t width, uint32_t height);
 
-        void Save(std::filesystem::path path = "output.png");
+        void SaveAsPNG(std::filesystem::path path = "output.png");
+        void SaveAsBMP(std::filesystem::path path = "output.bmp");
+        void SaveAsTGA(std::filesystem::path path = "output.tga");
+        void SaveAsJPG(std::filesystem::path path = "output.jpg");
 
         inline uint32_t GetWidth() const { return width_; }
         inline uint32_t GetHeight() const { return height_; }
+        inline uint32_t GetChannels() const { return channels_; }
+        inline std::byte* GetData() const { return data_; }
 
         friend void swap(Image& first, Image& second) noexcept { first.swap(second); }
 
