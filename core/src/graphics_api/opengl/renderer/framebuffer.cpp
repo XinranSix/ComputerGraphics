@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "core/base/core.h"
+#include "core/base/base.h"
 #include "graphics_api/opengl/renderer/framebuffer.h"
 
 namespace CG::GL {

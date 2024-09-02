@@ -29,8 +29,8 @@ namespace CG {
 #define CG_CORE_FATAL(...) CG::Logger::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client Logging Macros
-#define CCG_APP_TRACE(...) CG::Logger::GetClientLogger()->trace(__VA_ARGS__)
-#define CCG_APP_INFO(...) CG::Logger::GetClientLogger()->info(__VA_ARGS__)
-#define CCG_APP_WARN(...) CG::Logger::GetClientLogger()->warn(__VA_ARGS__)
-#define CCG_APP_ERROR(...) CG::Logger::GetClientLogger()->error(__VA_ARGS__)
-#define CCG_APP_FATAL(...) CG::Logger::GetClientLogger()->critical(__VA_ARGS__)
+#define CG_APP_TRACE(...) CG::Logger::GetClientLogger()->trace(__VA_ARGS__)
+#define CG_APP_INFO(...) CG::Logger::GetClientLogger()->info(__VA_ARGS__)
+#define CG_APP_WARN(...) CG::Logger::GetClientLogger()->warn(__VA_ARGS__)
+#define CG_APP_ERROR(...) CG::Logger::GetClientLogger()->error(__VA_ARGS__)
+#define CG_APP_FATAL(...) CG::Logger::GetClientLogger()->critical(__VA_ARGS__)

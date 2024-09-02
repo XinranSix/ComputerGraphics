@@ -9,7 +9,7 @@ SandboxLayer::~SandboxLayer() {}
 
 void SandboxLayer::OnAttach() {
 
-    CG::Utils::EnableGLDebugging();
+    CG::GL::Utils::EnableGLDebugging();
 
     // Init here
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/log/log.h"
+#include "core/base/assert.h"
 
-#define CG_CORE_DEBUG // TODO: Remove this line when the project is ready for release
+/* #define CG_CORE_DEBUG // TODO: Remove this line when the project is ready for release
 
 #ifdef CG_CORE_DEBUG
     #define CG_CORE_ENABLE_ASSERTS
@@ -19,6 +19,24 @@
         }
 #else
     #define CG_CORE_ASSERT(x, ...)
+#endif */
+
+// __VA_ARGS__ expansion to get past MSVC "bug"
+#define CG_EXPAND_VARGS(x) x
+
+// Detect compiler and define macros accordingly
+#if defined(_MSC_VER)
+    // Microsoft Visual Studio
+    #define CG_FORCE_INLINE __forceinline
+    #define CG_EXPLICIT_STATIC static
+#elif defined(__GNUC__) || defined(__clang__)
+// GCC or Clang
+    #define CG_FORCE_INLINE __attribute__((always_inline)) inline
+    #define CG_EXPLICIT_STATIC
+#else
+// Other compilers
+    #define CG_FORCE_INLINE inline
+    #define CG_EXPLICIT_STATIC
 #endif
 
 #define BIT(x) (1 << x)

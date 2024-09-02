@@ -10,13 +10,13 @@ ExampleLayer::ExampleLayer() : cameraController_ { 16.0f / 9.0f } {}
 ExampleLayer::~ExampleLayer() {}
 
 void ExampleLayer::OnAttach() {
-    CG::Utils::EnableGLDebugging();
+    CG::GL::Utils::EnableGLDebugging();
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    shader_ = CG::Utils::Shader::FromGLSLTextFiles("assets/shader/test.frag.glsl", "assets/shader/test.frag.glsl");
+    shader_ = CG::GL::Shader::FromGLSLTextFiles("assets/shader/test.frag.glsl", "assets/shader/test.frag.glsl");
 
     glCreateVertexArrays(1, &quadVA_);
     glBindVertexArray(quadVA_);

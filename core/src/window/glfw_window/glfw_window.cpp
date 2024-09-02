@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "window/glfw_window/glfw_window.h"
+#include "window/glfw/glfw_window.h"
 #include "core/log/log.h"
 #include "events/application_event.h"
 #include "events/key_event.h"

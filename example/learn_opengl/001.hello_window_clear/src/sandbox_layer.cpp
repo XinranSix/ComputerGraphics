@@ -1,8 +1,6 @@
-#include <format>
-
+#include "sandbox_layer.h"
 #include "graphics_api/opengl/renderer/opengl_debug.h"
 #include "imgui.h"
-#include "sandbox_layer.h"
 
 SandboxLayer::SandboxLayer() {}
 
@@ -10,7 +8,7 @@ SandboxLayer::~SandboxLayer() {}
 
 void SandboxLayer::OnAttach() {
 
-    CG::Utils::EnableGLDebugging();
+    CG::GL::Utils::EnableGLDebugging();
     // Init here
     // framebuffer_.
     CG::GL::FramebufferSpecification spec;

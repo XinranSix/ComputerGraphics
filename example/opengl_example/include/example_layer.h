@@ -1,9 +1,9 @@
 #pragma once
 
 #include "core/app/layer.h"
+#include "esc/components.h"
 #include "graphics_api/opengl/renderer/orthographic_camera_controller.h"
 #include "graphics_api/opengl/renderer/shader.h"
-#include "esc/components.h"
 
 class ExampleLayer : public CG::Layer {
 public:
@@ -17,7 +17,7 @@ public:
     virtual void OnImGuiRender() override;
 
 private:
-    CG::Utils ::Shader* shader_;
+    CG::GL ::Shader* shader_;
     CG::Utils::OrthographicCameraController cameraController_;
 
     GLuint quadVA_, quadVB_, quadIB_;
@@ -27,7 +27,5 @@ private:
     glm::vec4 squareColor_ = squareBaseColor_;
     float backgroundColor_[4] { 0.1f, 0.1f, 0.1f, 1.0f };
 
-    TransformComponent transform_;
-
-    
+    CG::TransformComponent transform_;
 };

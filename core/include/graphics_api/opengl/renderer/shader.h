@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
-namespace CG::Utils {
+namespace CG::GL {
 
     class Shader {
     public:
@@ -27,4 +27,4 @@ namespace CG::Utils {
         GLuint rendererID_;
     };
 
-} // namespace CG::Utils
+} // namespace CG::GL

@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "animation/animdata.h"
-#include "animation/bone.h"
+#include "animation/bone/bone.h"
 
 namespace CG {
     namespace Utils {

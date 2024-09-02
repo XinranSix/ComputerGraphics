@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "animation/animation.h"
-#include "animation/bone.h"
+#include "animation/bone/bone.h"
 
 namespace CG {
     class Animator {

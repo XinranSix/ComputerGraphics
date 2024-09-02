@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "window/glfw_window/glfw_input.h"
+#include "window/glfw/glfw_input.h"
 #include "core/app/application.h"
 
 namespace CG {

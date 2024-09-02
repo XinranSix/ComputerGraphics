@@ -3,7 +3,7 @@
 #include "core/log/log.h"
 #include "graphics_api/opengl/renderer/shader.h"
 
-namespace CG::Utils {
+namespace CG::GL {
 
     static std::string ReadFileAsString(const std::string& filepath) {
         std::string result;
@@ -95,5 +95,5 @@ namespace CG::Utils {
         rendererID_ = program;
     }
 
-} // namespace CG::Utils
+} // namespace CG::GL
 // example/opengl_example/assets/shader/test.frag.glsl
