@@ -31,11 +31,11 @@ namespace CG {
         // ImFont* pFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
         ImFont* pFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 18.0f, nullptr,
                                                      io.Fonts->GetGlyphRangesChineseFull());
+
         io.FontDefault = io.Fonts->Fonts.back();
 
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
-
         // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular
         // ones.
         ImGuiStyle& style = ImGui::GetStyle();

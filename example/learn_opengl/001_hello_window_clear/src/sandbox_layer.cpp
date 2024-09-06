@@ -5,19 +5,13 @@
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
 
-SandboxLayer::SandboxLayer() {
-    glfwSetFramebufferSizeCallback((GLFWwindow*)CG::Application::Get().GetWindow().GetNativeWindow(),
-                                   framebuffer_size_callback);
-}
+SandboxLayer::SandboxLayer() {}
 
 SandboxLayer::~SandboxLayer() {}
 
 void SandboxLayer::OnAttach() {
-
-    // CG::GL::Utils::EnableGLDebugging();
-    // Init here
-    // framebuffer_.
-    // CG::GL::FramebufferSpecification spec;
+    glfwSetFramebufferSizeCallback((GLFWwindow*)CG::Application::Get().GetWindow().GetNativeWindow(),
+                                   framebuffer_size_callback);
 }
 
 void SandboxLayer::OnDetach() {
@@ -32,10 +26,6 @@ void SandboxLayer::OnUpdate(CG::Timestep ts) {
     // Render here
     glClearColor(background_color_[0], background_color_[1], background_color_[2], background_color_[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // glfwSwapBuffers((GLFWwindow*)CG::Application::Get().GetWindow().GetNativeWindow());
-
-    // glfwPollEvents();
 }
 
 void SandboxLayer::OnImGuiRender() {
