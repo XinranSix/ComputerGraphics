@@ -19,6 +19,6 @@ public:
     virtual void OnImGuiRender() override;
 
 private:
-    float backgroundcolor_[4] { 0.7137f, 0.7333f, 0.7686f, 1.0f };
+    float background_color_[4] { 0.7137f, 0.7333f, 0.7686f, 1.0f };
     std::shared_ptr<CG::GL::Framebuffer> framebuffer_;
 };

@@ -33,6 +33,10 @@ namespace CG {
             CG_CORE_ASSERT(success, "Could not intialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
+
+           glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+              glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+              glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
         }
 
         window_ = glfwCreateWindow((int)props.width, (int)props.height, data_.title.c_str(), nullptr, nullptr);
