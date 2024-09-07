@@ -48,7 +48,7 @@ private:
     )"
     };
 
-    CG::Ref<CG::OpenGLShader> shader_;
+    CG::Ref<CG::Shader> shader_;
 
     const GLfloat vertices_[9] {
         -0.5f, -0.5f, 0.0f, // left

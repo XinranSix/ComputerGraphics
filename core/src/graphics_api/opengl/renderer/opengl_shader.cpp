@@ -24,35 +24,6 @@ namespace CG {
             return 0;
         }
 
-        /*   static const char* GLShaderStageToString(GLenum stage) {
-              switch (stage) {
-                  case GL_VERTEX_SHADER: return "GL_VERTEX_SHADER";
-                  case GL_FRAGMENT_SHADER: return "GL_FRAGMENT_SHADER";
-              }
-              CG_CORE_ASSERT(false, "Unknown shader stage!");
-              return nullptr;
-          }
-
-          static const char* GetCacheDirectory() {
-              // TODO: 根据需求修改
-              return "assets/cache/shader/opengl";
-          }
-
-          static void CreateCacheDirectoryIfNeeded() {
-              std::string cacheDirectory = GetCacheDirectory();
-              if (!std::filesystem::exists(cacheDirectory)) {
-                  std::filesystem::create_directories(cacheDirectory); // µÝ¹é´´½¨Ä¿Â¼
-              }
-          }
-
-          static const char* GLShaderStageCachedOpenGLFileExtension(uint32_t stage) {
-              switch (stage) {
-                  case GL_VERTEX_SHADER: return ".cached_opengl.vert";
-                  case GL_FRAGMENT_SHADER: return ".cached_opengl.frag";
-              }
-              CG_CORE_ASSERT(false, "²»ÖªµÀµÄshaderÀàÐÍ");
-              return "";
-          } */
     } // namespace Utils
 
     OpenGLShader::OpenGLShader(const std::string& filepath) : filePath_ { filepath } {

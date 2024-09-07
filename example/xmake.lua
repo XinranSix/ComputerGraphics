@@ -1,4 +1,3 @@
-includes("opengl_example")
 includes("opengl_sandbox")
 includes("learn_opengl")
 includes("cpu_path_tracing")
