@@ -7,7 +7,7 @@
 #include "core/timestep.h"
 #include "events/event.h"
 #include "graphics_api/opengl/renderer/framebuffer.h"
-#include "renderer/shader.h"
+#include "graphics_api/opengl/renderer/opengl_shader.h"
 
 class SandboxLayer : public CG::Layer {
 public:
@@ -48,7 +48,7 @@ private:
     )"
     };
 
-    CG::Ref<CG::Shader> shader_;
+    CG::Ref<CG::OpenGLShader> shader_;
 
     const GLfloat vertices_[9] {
         -0.5f, -0.5f, 0.0f, // left

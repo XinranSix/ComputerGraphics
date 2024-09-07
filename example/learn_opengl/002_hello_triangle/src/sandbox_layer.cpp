@@ -2,6 +2,7 @@
 #include "sandbox_layer.h"
 #include "GLFW/glfw3.h"
 #include "core/app/application.h"
+#include "graphics_api/opengl/renderer/opengl_shader.h"
 #include "imgui.h"
 #include "renderer/shader.h"
 
@@ -15,9 +16,9 @@ void SandboxLayer::OnAttach() {
     glfwSetFramebufferSizeCallback((GLFWwindow*)CG::Application::Get().GetWindow().GetNativeWindow(),
                                    framebuffer_size_callback);
 
-    // shader_ = std::make_shared<CG::OpenGLShader>("triangle", vertexShaderSource_, fragmentShaderSource_);
+    shader_ = std::make_shared<CG::OpenGLShader>("triangle", vertexShaderSource_, fragmentShaderSource_);
 
-    shader_ = CG::Shader::Create("triangle", vertexShaderSource_, fragmentShaderSource_);
+    // shader_ = CG::Shader::Create("triangle", vertexShaderSource_, fragmentShaderSource_);
 
     glCreateVertexArrays(1, &VAO_);
     glCreateBuffers(1, &VBO_);
