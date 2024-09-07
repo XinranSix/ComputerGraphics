@@ -2,8 +2,8 @@
 #include "sandbox_layer.h"
 #include "GLFW/glfw3.h"
 #include "core/app/application.h"
-#include "core/log/log.h"
 #include "imgui.h"
+#include "renderer/shader.h"
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
 
@@ -15,41 +15,9 @@ void SandboxLayer::OnAttach() {
     glfwSetFramebufferSizeCallback((GLFWwindow*)CG::Application::Get().GetWindow().GetNativeWindow(),
                                    framebuffer_size_callback);
 
-    // vertex shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource_, nullptr);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success {};
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        CG_APP_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{0}", infoLog);
-    }
-    // fragmeng shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource_, nullptr);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        CG_APP_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{0}", infoLog);
-    }
-    // link shaders
-    shaderProgram_ = glCreateProgram();
-    glAttachShader(shaderProgram_, vertexShader);
-    glAttachShader(shaderProgram_, fragmentShader);
-    glLinkProgram(shaderProgram_);
-    // check for linking errors
-    glGetProgramiv(shaderProgram_, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram_, 512, nullptr, infoLog);
-        CG_APP_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n{0}", infoLog);
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    // shader_ = std::make_shared<CG::OpenGLShader>("triangle", vertexShaderSource_, fragmentShaderSource_);
+
+    shader_ = CG::Shader::Create("triangle", vertexShaderSource_, fragmentShaderSource_);
 
     glCreateVertexArrays(1, &VAO_);
     glCreateBuffers(1, &VBO_);
@@ -88,11 +56,10 @@ void SandboxLayer::OnUpdate(CG::Timestep ts) {
 
     glPolygonMode(GL_FRONT_AND_BACK, wireMode_ ? GL_LINE : GL_FILL);
     // draw our first triangle
-    glUseProgram(shaderProgram_);
-    glBindVertexArray(VAO_); // seeing as we only have a single VAO there's no need to bind it every time, but we'll
-                             // do so to keep things a bit more organized
+    shader_->Bind();
+    glBindVertexArray(VAO_); // seeing as we only have a single VAO there's no need to bind it every
+                             // time, but we'll do so to keep things a bit more organized
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    // glBindVertexArray(0); // no need to unbind it every time
 }
 
 void SandboxLayer::OnImGuiRender() {

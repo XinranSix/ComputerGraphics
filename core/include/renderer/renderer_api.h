@@ -1,48 +1,26 @@
 #pragma once
 
-#include <string>
+#include <glm/glm.hpp>
 
 namespace CG {
-    using RendererID = uint32_t;
-
-    enum class RendererAPIType { None, OpenGL };
-
-    // TODO: move into separate header
-    enum class PrimitiveType { None = 0, Triangles, Lines };
-
-    struct RenderAPICapabilities {
-        std::string vendor;
-        std::string renderer;
-        std::string version;
-
-        int maxSamples = 0;
-        float maxAnisotropy = 0.0f;
-        int maxTextureUnits = 0;
-    };
-
     class RendererAPI {
-    private:
     public:
-        static void Init();
-        static void Shutdown();
+        enum class API { None = 0, OpenGL = 1 };
 
-        static void Clear(float r, float g, float b, float a);
-        static void SetClearColor(float r, float g, float b, float a);
+    public:
+        virtual ~RendererAPI() = default;
+        virtual void Init() = 0;
+        virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+        virtual void SetClearColor(const glm::vec4& color) = 0;
+        virtual void Clear() = 0;
 
-        static void DrawIndexed(uint32_t count, PrimitiveType type, bool depthTest = true, bool faceCulling = true);
-        static void SetLineThickness(float thickness);
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
+        virtual void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) = 0;
+        virtual void SetLineWidth(float width) = 0;
 
-        static RenderAPICapabilities& GetCapabilities() {
-            static RenderAPICapabilities _;
-            return _;
-        }
-
-        static RendererAPIType Current() { return sCurrentRendererAPI_; }
-
-    private:
-        static void LoadRequiredAssets();
+        inline static API GetAPI() { return s_API; }
 
     private:
-        static RendererAPIType sCurrentRendererAPI_;
+        static API s_API;
     };
 } // namespace CG

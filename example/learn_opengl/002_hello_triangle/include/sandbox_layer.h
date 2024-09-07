@@ -3,9 +3,11 @@
 #include <memory>
 
 #include "core/app/layer.h"
+#include "core/base/base.h"
 #include "core/timestep.h"
 #include "events/event.h"
 #include "graphics_api/opengl/renderer/framebuffer.h"
+#include "renderer/shader.h"
 
 class SandboxLayer : public CG::Layer {
 public:
@@ -46,7 +48,7 @@ private:
     )"
     };
 
-    GLuint shaderProgram_ {};
+    CG::Ref<CG::Shader> shader_;
 
     const GLfloat vertices_[9] {
         -0.5f, -0.5f, 0.0f, // left
@@ -56,5 +58,5 @@ private:
 
     GLuint VBO_ {}, VAO_ {};
 
-    bool wireMode_ { };
+    bool wireMode_ {};
 };
