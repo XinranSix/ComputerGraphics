@@ -8,13 +8,31 @@
 #include "renderer/shader.h"
 #include "core/base/base.h"
 #include "graphics_api/opengl/renderer/opengl_shader.h"
+#include "renderer/renderer.h"
+#include "renderer/renderer_api.h"
 
 namespace CG {
 
-    Ref<Shader> Shader::Create(const std::string& filepath) { return CreateRef<OpenGLShader>(filepath); }
+    Ref<Shader> Shader::Create(const std::string& filepath) {
+        switch (Renderer::GetAPI()) {
+            case RendererAPI::API::None:
+                CG_CORE_ASSERT(false, "RendererAPI:None is currently not supported!");
+                return nullptr;
+            case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(filepath);
+        }
+        CG_CORE_ASSERT(false, "UnKnown RendererAPI!");
+        return nullptr;
+    }
 
     Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) {
-        return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+        switch (Renderer::GetAPI()) {
+            case RendererAPI::API::None:
+                CG_CORE_ASSERT(false, "RendererAPI:None is currently not supported!");
+                return nullptr;
+            case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+        }
+        CG_CORE_ASSERT(false, "0x1908UnKnown RendererAPI!");
+        return nullptr;
     }
 
     //////////////////////////////////////////////////////////////////

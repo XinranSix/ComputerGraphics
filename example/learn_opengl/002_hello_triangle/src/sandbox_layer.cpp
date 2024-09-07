@@ -1,10 +1,10 @@
-
 #include "sandbox_layer.h"
 #include "GLFW/glfw3.h"
 #include "core/app/application.h"
-#include "graphics_api/opengl/renderer/opengl_shader.h"
 #include "imgui.h"
 #include "renderer/shader.h"
+#include "renderer/vertex_array.h"
+#include "renderer/vertex_buffer.h"
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
 
@@ -18,26 +18,13 @@ void SandboxLayer::OnAttach() {
 
     shader_ = CG::Shader::Create("triangle", vertexShaderSource_, fragmentShaderSource_);
 
-    glCreateVertexArrays(1, &VAO_);
-    glCreateBuffers(1, &VBO_);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO_);
+    auto vertexBuffer = CG::VertexBuffer::Create((float*)vertices_, sizeof(vertices_));
+    vertexBuffer->SetLayout({
+        { CG::ShaderDataType::Float3, "aPos" },
+    });
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), reinterpret_cast<void*>(0));
-    glEnableVertexAttribArray(0);
-
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound
-    // vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens.
-    // Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not
-    // directly necessary.
-    glBindVertexArray(0);
+    vertexArray_ = CG::VertexArray::Create();
+    vertexArray_->AddVertexBuffer(vertexBuffer);
 }
 
 void SandboxLayer::OnDetach() {
@@ -56,8 +43,7 @@ void SandboxLayer::OnUpdate(CG::Timestep ts) {
     glPolygonMode(GL_FRONT_AND_BACK, wireMode_ ? GL_LINE : GL_FILL);
     // draw our first triangle
     shader_->Bind();
-    glBindVertexArray(VAO_); // seeing as we only have a single VAO there's no need to bind it every
-                             // time, but we'll do so to keep things a bit more organized
+    vertexArray_->Bind();
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 

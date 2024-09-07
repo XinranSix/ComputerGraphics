@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include "renderer/vertex_array.h"
+
 namespace CG {
     class RendererAPI {
     public:
@@ -18,9 +20,9 @@ namespace CG {
         virtual void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) = 0;
         virtual void SetLineWidth(float width) = 0;
 
-        inline static API GetAPI() { return s_API; }
+        inline static API GetAPI() { return sAPI; }
 
     private:
-        static API s_API;
+        static API sAPI;
     };
 } // namespace CG
