@@ -5,6 +5,6 @@ add_defines("WITH_DEBUG_INFO")
 
 target("cpu_path_tracing")
     add_files("./src/**.cpp")
-    set_rundir("$(projectdir)/example/cpu_path_tracing")
     add_packages("glm", "stb", "rapidobj")
+    set_rundir(os.scriptdir())
     

@@ -7,9 +7,8 @@
 #include "core/timestep.h"
 #include "events/event.h"
 #include "graphics_api/opengl/renderer/framebuffer.h"
-#include "graphics_api/opengl/renderer/opengl_shader.h"
+#include "renderer/shader.h"
 #include "renderer/vertex_array.h"
-#include "renderer/vertex_buffer.h"
 
 class SandboxLayer : public CG::Layer {
 public:
@@ -58,9 +57,6 @@ private:
         0.0f,  0.5f,  0.0f  // top
     };
 
-    // GLuint VBO_ {}, VAO_ {};
-
-    // CG::Ref<CG::VertexBuffer> vertexBuffer_;
     CG::Ref<CG::VertexArray> vertexArray_;
 
     bool wireMode_ {};

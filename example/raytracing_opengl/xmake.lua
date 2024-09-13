@@ -6,5 +6,5 @@ target("raytracing_opengl")
     set_kind("binary")
     add_files("src/*.cpp")
     add_packages("glfw", "glad", "glm", "stb", "fmt", "box2d")
-    set_rundir("$(projectdir)/example/raytracing_opengl")
+    set_rundir(os.scriptdir())
     

@@ -1,7 +1,7 @@
 target('the_rest_of_your_life')
     add_files("./main.cpp")
     add_packages("stb")
-    set_rundir("$(scriptdir)")
+    set_rundir(os.scriptdir())
 
 target('estimate_of_pi')
     add_files("./pi.cpp")
