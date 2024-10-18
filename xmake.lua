@@ -20,6 +20,7 @@ add_requires("glfw")
 add_requires("glad") 
 add_requires("opengl") 
 add_requires("glm")
+add_requires("libsdl")
 
 -- image loader
 add_requires("stb")
@@ -71,6 +72,7 @@ add_requires("indicators")  -- 进度条
 
 add_requires("magic_enum")
 add_requires("nameof")
+add_requires("watcher")
 
 add_requires("imgui docking", {configs = {glfw = true, opengl3 = true, freetype = true, wchar32 = true}}) 
 add_requires("imguizmo")

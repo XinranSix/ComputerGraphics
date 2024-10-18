@@ -1,5 +1,10 @@
 #include <iostream>
+#include <limits>
+#include <memory>
+#include <mutex>
+#include <shared_mutex>
 #include <string>
+#include <thread>
 #include <vector>
 
 // clang-format off
@@ -14,6 +19,10 @@
 #include <imgui_impl_opengl3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <wtr/watcher.hpp>
+
+using namespace std;
+using namespace wtr;
 
 #include "log/log.h"
 #include "shader/shader.h"
@@ -26,7 +35,33 @@ unsigned int SCR_HEIGHT = 600;
 
 glm::vec2 iMouse;
 
+std::unique_ptr<Shader> shader;
+
+std::mutex mut;
+
+auto show(event e) {
+    cout << to<string>(e.effect_type) + ' ' + to<string>(e.path_type) + ' ' + to<string>(e.path_name) +
+                (e.associated ? " -> " + to<string>(e.associated->path_name) : "")
+         << endl;
+    auto re = e.effect_type;
+    // if (re == wtr::watcher::event::effect_type::modify) {
+    //
+    auto t = std::thread([]() {
+        std::lock_guard<std::mutex> lock(mut);
+        // shader.reset(new Shader { "shader/quad.vs", "shader/quad.fs" });
+        shader = std::make_unique<Shader>("shader/quad.vs", "shader/quad.fs");
+    });
+    t.join();
+    // }
+}
+
+constexpr float iFrame {};
+
+// init the shader by the shader class
+
 int main(int argc, char* argv[]) {
+
+    // Do some work. (We'll just wait for a newline.)
 
     Logger::init();
 
@@ -47,7 +82,9 @@ int main(int argc, char* argv[]) {
 
     glfwSetCursorPosCallback(window, [](GLFWwindow*, double xpos, double ypos) {
         iMouse.x = xpos;
-        iMouse.y = ypos;
+        iMouse.y = SCR_HEIGHT - ypos;
+        // INFO("xpos: {}, ypos: {}", xpos, ypos);
+        // INFO("iMouse.x: {}, iMouse.y: {}", iMouse.x, iMouse.y);
     });
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
@@ -58,15 +95,15 @@ int main(int argc, char* argv[]) {
     }
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glEnable(GL_DEPTH_TEST);
+    //
+    // Shader shader("shader/quad.vs", "shader/quad.fs");
+    shader = std::make_unique<Shader>("shader/quad.vs", "shader/quad.fs");
+
+    // auto watcher = watch("./shader", show);
 
     GLuint VAO {}, VBO {};
     // create a plane vertex with four pos
-    float vertices[] = { 
-        -1.0f, -1.0f,
-         1.0f, -1.0f, 
-         -1.0f, 1.0f, 
-         1.0f, 1.0f 
-         };
+    float vertices[] = { -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f };
 
     // set the vao and vbo
     glGenVertexArrays(1, &VAO);
@@ -86,11 +123,11 @@ int main(int argc, char* argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    // init the shader by the shader class
-    Shader shader("shader/quad.vs", "shader/quad.fs");
-
     // main loop
     while (!glfwWindowShouldClose(window)) {
+        shader = std::make_unique<Shader>("shader/quad.vs", "shader/quad.fs");
+
+        // std::lock_guard<std::mutex> lock(mut);
         // process the input
         processInput(window);
         // set the color of the screen
@@ -100,17 +137,18 @@ int main(int argc, char* argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // use the shader
-        shader.bind();
+        shader->bind();
         // set the iResolution
         // create a vec2 to store the resolution
         glm::vec2 resolution;
         resolution.x = SCR_WIDTH;
         resolution.y = SCR_HEIGHT;
         // set the iResolution
-        shader.setVec2("iResolution", resolution);
+        shader->setVec2("iResolution", resolution);
         // set the iTime
-        shader.setFloat("iTime", glfwGetTime());
-        shader.setVec2("iMouse", iMouse);
+        shader->setFloat("iTime", glfwGetTime());
+        shader->setVec2("iMouse", iMouse);
+        shader->setFloat("iFrame", iFrame);
 
         // bind the vao
         glBindVertexArray(VAO);
