@@ -11,7 +11,7 @@ end
 
 -- add_defines("IMGUI_DEFINE_MATH_OPERATORS")
 
-includes("core")
+-- includes("core")
 includes("test")
 includes("example")
 
