@@ -39,6 +39,8 @@ add_requires("yaml-cpp")
 -- 音频与视频
 add_requires("ffmpeg")
 add_requires("raylib")
+add_requires("openal-soft")
+add_requires("caudio")
 
 --  mesh loader
 add_requires("assimp") 
@@ -80,6 +82,9 @@ add_requires("imnodes")
 add_requires("imgui-file-dialog")
 add_requires("imgui-color-text-edit")
 add_requires("im3d")
+
+-- network
+add_requires("cinatra") 
 
 -- xmake project -k compile_commands
 -- xmake project -k makefile
