@@ -20,7 +20,8 @@ add_requires("glfw")
 add_requires("glad") 
 add_requires("opengl") 
 add_requires("glm")
-add_requires("libsdl")
+add_requires("wxwidgets")
+add_requires("glew")
 
 -- image loader
 add_requires("stb")

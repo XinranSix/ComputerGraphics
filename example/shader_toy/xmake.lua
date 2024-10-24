@@ -2,9 +2,6 @@ set_runtimes("MD")
 
 add_includedirs("include")
 
-add_requires("glew")
-add_requires("wxwidgets")
-
 target("shader_toy")
     set_kind("binary")
     add_files("src/*.cpp")
