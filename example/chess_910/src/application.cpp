@@ -4,12 +4,11 @@
 
 using namespace std;
 
-namespace
-{
-constexpr float const step = 180.0F;
+namespace {
+    constexpr float const step = 180.0F;
 } // namespace
 
-static constexpr char const *vs_source = R"(
+static constexpr char const* vs_source = R"(
     #version 330 core
     layout (location = 0) in vec4 aPos;
     layout (location = 1) in vec3 aNormal;
@@ -32,7 +31,7 @@ static constexpr char const *vs_source = R"(
     }
 )";
 
-static constexpr char const *fs_source = R"(
+static constexpr char const* fs_source = R"(
     #version 330 core
 
     in vec3 FragPos;
@@ -75,14 +74,12 @@ static constexpr char const *fs_source = R"(
     }
 )";
 
-Application &Application::instance()
-{
+Application& Application::instance() {
     static Application instance;
     return instance;
 }
 
-void Application::init(GLFWwindow * /*window*/)
-{
+void Application::init(GLFWwindow* /*window*/) {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClearDepthf(1.0);
 
@@ -95,7 +92,7 @@ void Application::init(GLFWwindow * /*window*/)
         std::vector<Object> tmp = load_->loadObject("object/Chess/chess.obj");
         objects_.insert(objects_.end(), tmp.begin(), tmp.end());
     }
-    
+
     glUseProgram(shader_->id());
     glUniform1i(glGetUniformLocation(shader_->id(), "textureDiffuse"), 0);
 
@@ -103,11 +100,9 @@ void Application::init(GLFWwindow * /*window*/)
     glEnable(GL_MULTISAMPLE);
 }
 
-void Application::display(GLFWwindow * /*window*/)
-{
+void Application::display(GLFWwindow* /*window*/) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (objects_.empty())
-    {
+    if (objects_.empty()) {
         return;
     }
 
@@ -123,7 +118,7 @@ void Application::display(GLFWwindow * /*window*/)
     glUniform3f(glGetUniformLocation(shader_->id(), "lightPos"), 10, 10, 0);
     glUniform1i(glGetUniformLocation(shader_->id(), "onOff"), static_cast<GLint>(onOff_));
 
-    glm::mat4 model = glm::scale(glm::mat4{1.0}, glm::vec3(0.1));
+    glm::mat4 model = glm::scale(glm::mat4 { 1.0 }, glm::vec3(0.1));
     model = glm::rotate(model, glm::radians(90.0F), glm::vec3(-1, 0, 0));
     model = glm::translate(model, glm::vec3(0, -25.5, -0.5));
     glUniformMatrix4fv(glGetUniformLocation(shader_->id(), "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -164,13 +159,9 @@ void Application::display(GLFWwindow * /*window*/)
     placeLightChess(12, 4, 7);
 }
 
-float Application::getOffset(int x, float step)
-{
-    return static_cast<float>(3 - x + 0.5) * step;
-}
+float Application::getOffset(int x, float step) { return static_cast<float>(3 - x + 0.5) * step; }
 
-void Application::placeDarkChess(size_t index, int x, int y)
-{
+void Application::placeDarkChess(size_t index, int x, int y) {
     glm::mat4 model = scale(glm::mat4(1.0), glm::vec3(0.003));
     float offsetX = getOffset(x, -step);
     float offsetY = getOffset(y, -step);
@@ -180,8 +171,7 @@ void Application::placeDarkChess(size_t index, int x, int y)
     objects_[index].draw();
 }
 
-void Application::placeLightChess(size_t index, int x, int y)
-{
+void Application::placeLightChess(size_t index, int x, int y) {
     glm::mat4 model = scale(glm::mat4(1.0), glm::vec3(0.003));
     model = rotate(model, glm::radians(180.0F), glm::vec3(0, 1, 0));
     float offsetX = getOffset(x, step);
@@ -192,78 +182,38 @@ void Application::placeLightChess(size_t index, int x, int y)
     objects_[index].draw();
 }
 
-void Application::keyCallback(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods*/)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
+void Application::keyCallback(GLFWwindow* window, int key, int /*scancode*/, int action, int /*mods*/) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
-    if (key == GLFW_KEY_L && action == GLFW_PRESS)
-    {
+    if (key == GLFW_KEY_L && action == GLFW_PRESS) {
         onOff_ = !onOff_;
     }
 
-    if (action == GLFW_PRESS)
-    {
-        switch (key)
-        {
-        case GLFW_KEY_W:
-            camera_->processMoveStatus(CameraMovement::FORWARD, true);
-            break;
-        case GLFW_KEY_S:
-            camera_->processMoveStatus(CameraMovement::BACKWARD, true);
-            break;
-        case GLFW_KEY_A:
-            camera_->processMoveStatus(CameraMovement::LEFT, true);
-            break;
-        case GLFW_KEY_D:
-            camera_->processMoveStatus(CameraMovement::RIGHT, true);
-            break;
-        case GLFW_KEY_UP:
-            camera_->processMoveStatus(CameraMovement::UP, true);
-            break;
-        case GLFW_KEY_DOWN:
-            camera_->processMoveStatus(CameraMovement::DOWN, true);
-            break;
-        default:
-            break;
+    if (action == GLFW_PRESS) {
+        switch (key) {
+            case GLFW_KEY_W: camera_->processMoveStatus(CameraMovement::FORWARD, true); break;
+            case GLFW_KEY_S: camera_->processMoveStatus(CameraMovement::BACKWARD, true); break;
+            case GLFW_KEY_A: camera_->processMoveStatus(CameraMovement::LEFT, true); break;
+            case GLFW_KEY_D: camera_->processMoveStatus(CameraMovement::RIGHT, true); break;
+            case GLFW_KEY_UP: camera_->processMoveStatus(CameraMovement::UP, true); break;
+            case GLFW_KEY_DOWN: camera_->processMoveStatus(CameraMovement::DOWN, true); break;
+            default: break;
         }
-    }
-    else if (action == GLFW_RELEASE)
-    {
-        switch (key)
-        {
-        case GLFW_KEY_W:
-            camera_->processMoveStatus(CameraMovement::FORWARD, false);
-            break;
-        case GLFW_KEY_S:
-            camera_->processMoveStatus(CameraMovement::BACKWARD, false);
-            break;
-        case GLFW_KEY_A:
-            camera_->processMoveStatus(CameraMovement::LEFT, false);
-            break;
-        case GLFW_KEY_D:
-            camera_->processMoveStatus(CameraMovement::RIGHT, false);
-            break;
-        case GLFW_KEY_UP:
-            camera_->processMoveStatus(CameraMovement::UP, false);
-            break;
-        case GLFW_KEY_DOWN:
-            camera_->processMoveStatus(CameraMovement::DOWN, false);
-            break;
-        default:
-            break;
+    } else if (action == GLFW_RELEASE) {
+        switch (key) {
+            case GLFW_KEY_W: camera_->processMoveStatus(CameraMovement::FORWARD, false); break;
+            case GLFW_KEY_S: camera_->processMoveStatus(CameraMovement::BACKWARD, false); break;
+            case GLFW_KEY_A: camera_->processMoveStatus(CameraMovement::LEFT, false); break;
+            case GLFW_KEY_D: camera_->processMoveStatus(CameraMovement::RIGHT, false); break;
+            case GLFW_KEY_UP: camera_->processMoveStatus(CameraMovement::UP, false); break;
+            case GLFW_KEY_DOWN: camera_->processMoveStatus(CameraMovement::DOWN, false); break;
+            default: break;
         }
     }
 }
 
-int Application::width() const
-{
-    return width_;
-}
+int Application::width() const { return width_; }
 
-int Application::height() const
-{
-    return height_;
-}
+int Application::height() const { return height_; }

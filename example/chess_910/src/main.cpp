@@ -10,17 +10,14 @@
 
 using namespace std;
 
-void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     Application::instance().keyCallback(window, key, scancode, action, mods);
 }
 
-int main()
-{
-    Application &app = Application::instance();
+int main() {
+    Application& app = Application::instance();
 
-    if (glfwInit() == GLFW_FALSE)
-    {
+    if (glfwInit() == GLFW_FALSE) {
         cout << "Initialize glfw error" << endl;
         return -1;
     }
@@ -31,17 +28,15 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(app.width(), app.height(), "CHESS", nullptr, nullptr);
-    if (window == nullptr)
-    {
+    GLFWwindow* window = glfwCreateWindow(app.width(), app.height(), "CHESS", nullptr, nullptr);
+    if (window == nullptr) {
         cout << "CreateWindow error" << endl;
         glfwTerminate();
         return -1;
     }
     glfwMakeContextCurrent(window);
 
-    if (glewInit() != GLEW_OK)
-    {
+    if (glewInit() != GLEW_OK) {
         cout << "GlewInit error" << endl;
         glfwDestroyWindow(window);
         glfwTerminate();
@@ -55,8 +50,7 @@ int main()
 
     app.init(window);
 
-    while (GL_TRUE != glfwWindowShouldClose(window))
-    {
+    while (GL_TRUE != glfwWindowShouldClose(window)) {
         app.display(window);
 
         glfwSwapBuffers(window);

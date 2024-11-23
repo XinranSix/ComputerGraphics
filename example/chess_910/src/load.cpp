@@ -13,13 +13,11 @@
 
 using namespace std;
 
-std::vector<Object> Load::loadObject(const std::string &path)
-{
+std::vector<Object> Load::loadObject(const std::string& path) {
     Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    if ((scene == nullptr) || ((scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) != 0U) || (scene->mRootNode == nullptr))
-    {
+    if ((scene == nullptr) || ((scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) != 0U) || (scene->mRootNode == nullptr)) {
         std::cout << "Error import.ReadFile " << import.GetErrorString() << std::endl;
         return {};
     }
@@ -31,29 +29,24 @@ std::vector<Object> Load::loadObject(const std::string &path)
     return objects;
 }
 
-void Load::processNode(aiNode *node, const aiScene *scene, std::vector<Object> &objects)
-{
+void Load::processNode(aiNode* node, const aiScene* scene, std::vector<Object>& objects) {
 
-    for (size_t i = 0; i < node->mNumMeshes; i++)
-    {
-        aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+    for (size_t i = 0; i < node->mNumMeshes; i++) {
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         objects.emplace_back(processMesh(mesh, scene));
     }
 
-    for (size_t i = 0; i < node->mNumChildren; i++)
-    {
+    for (size_t i = 0; i < node->mNumChildren; i++) {
         processNode(node->mChildren[i], scene, objects);
     }
 }
 
-Object Load::processMesh(aiMesh *mesh, const aiScene *scene)
-{
+Object Load::processMesh(aiMesh* mesh, const aiScene* scene) {
     vector<Vertex> vertices;
     vector<Texture> textures;
 
-    for (size_t i = 0; i < mesh->mNumVertices; i++)
-    {
-        Vertex vertex{};
+    for (size_t i = 0; i < mesh->mNumVertices; i++) {
+        Vertex vertex {};
         vertex.position.x = mesh->mVertices[i].x;
         vertex.position.y = mesh->mVertices[i].y;
         vertex.position.z = mesh->mVertices[i].z;
@@ -69,26 +62,22 @@ Object Load::processMesh(aiMesh *mesh, const aiScene *scene)
     }
 
     vector<unsigned int> indices;
-    for (size_t i = 0; i < mesh->mNumFaces; i++)
-    {
+    for (size_t i = 0; i < mesh->mNumFaces; i++) {
         aiFace const face = mesh->mFaces[i];
-        for (size_t j = 0; j < face.mNumIndices; j++)
-        {
+        for (size_t j = 0; j < face.mNumIndices; j++) {
             indices.emplace_back(face.mIndices[j]);
         }
     }
 
-    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     Texture diffuseMaps = loadTexture(material);
 
-    return Object{indices, vertices, diffuseMaps};
+    return Object { indices, vertices, diffuseMaps };
 }
 
-Texture Load::loadTexture(aiMaterial *material)
-{
+Texture Load::loadTexture(aiMaterial* material) {
     Texture texture;
-    if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
-    {
+    if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
         aiString str;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 
@@ -99,8 +88,7 @@ Texture Load::loadTexture(aiMaterial *material)
     return texture;
 }
 
-unsigned int Load::textureFromFile(const char *path, const string &directory)
-{
+unsigned int Load::textureFromFile(const char* path, const string& directory) {
     string filename = string(path);
     filename = directory + '/' + filename;
 
@@ -110,16 +98,12 @@ unsigned int Load::textureFromFile(const char *path, const string &directory)
     int width = 0;
     int height = 0;
     int comp = 0;
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &comp, 0);
-    if (data != nullptr)
-    {
+    unsigned char* data = stbi_load(filename.c_str(), &width, &height, &comp, 0);
+    if (data != nullptr) {
         GLint format = 0;
-        if (comp == 3)
-        {
+        if (comp == 3) {
             format = GL_RGB;
-        }
-        else if (comp == 4)
-        {
+        } else if (comp == 4) {
             format = GL_RGBA;
         }
 

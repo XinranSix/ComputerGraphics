@@ -9,27 +9,24 @@
 #include <string>
 #include <vector>
 
-struct Vertex
-{
+struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texCoords;
 };
 
-struct Texture
-{
-    unsigned int id{0};
+struct Texture {
+    unsigned int id { 0 };
     std::string path;
 };
 
-class Object
-{
-  public:
+class Object {
+public:
     Object(std::vector<unsigned int> indices, std::vector<Vertex> vertices, Texture texture);
 
     void draw();
 
-  private:
+private:
     void setupObject();
     void fixPostion();
 
@@ -37,8 +34,8 @@ class Object
     std::vector<Vertex> vertices_;
     Texture texture_;
 
-    unsigned int VAO{};
-    unsigned int VBO{};
-    unsigned int EBO{};
+    unsigned int VAO {};
+    unsigned int VBO {};
+    unsigned int EBO {};
 };
 #endif

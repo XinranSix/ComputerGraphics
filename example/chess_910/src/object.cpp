@@ -3,18 +3,15 @@
 #include <GL/glew.h>
 
 Object::Object(std::vector<unsigned int> indices, std::vector<Vertex> vertices, Texture texture)
-    : indices_(std::move(indices)), vertices_(std::move(vertices)), texture_(std::move(texture))
-{
+    : indices_(std::move(indices)), vertices_(std::move(vertices)), texture_(std::move(texture)) {
     fixPostion();
     setupObject();
 }
 
-void Object::fixPostion()
-{
-    glm::vec3 min{10000};
-    glm::vec3 max{-10000};
-    for (const auto &vec : vertices_)
-    {
+void Object::fixPostion() {
+    glm::vec3 min { 10000 };
+    glm::vec3 max { -10000 };
+    for (const auto& vec : vertices_) {
         min.x = std::min(min.x, vec.position.x);
         min.y = std::min(min.y, vec.position.y);
         min.z = std::min(min.z, vec.position.z);
@@ -25,14 +22,12 @@ void Object::fixPostion()
     glm::vec3 tmp = (min + max) / 2.0F;
     tmp.y = min.y;
 
-    for (auto &vec : vertices_)
-    {
+    for (auto& vec : vertices_) {
         vec.position -= tmp;
     }
 }
 
-void Object::draw()
-{
+void Object::draw() {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_.id);
 
@@ -41,8 +36,7 @@ void Object::draw()
     glBindVertexArray(0);
 }
 
-void Object::setupObject()
-{
+void Object::setupObject() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -60,9 +54,9 @@ void Object::setupObject()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
     glBindVertexArray(0);
 }

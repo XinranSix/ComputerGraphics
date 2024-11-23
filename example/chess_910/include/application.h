@@ -9,27 +9,26 @@
 #include "load.h"
 #include "shader.h"
 
-class Application
-{
-  public:
-    static Application &instance();
+class Application {
+public:
+    static Application& instance();
 
-    void init(GLFWwindow *window);
-    void display(GLFWwindow *window);
+    void init(GLFWwindow* window);
+    void display(GLFWwindow* window);
 
-    void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
     [[nodiscard]] int width() const;
     [[nodiscard]] int height() const;
 
-  private:
+private:
     void placeDarkChess(size_t index, int x, int y);
     void placeLightChess(size_t index, int x, int y);
     float getOffset(int x, float step);
 
-    Load *load_{};
-    Camera *camera_{};
-    Shader *shader_{};
+    Load* load_ {};
+    Camera* camera_ {};
+    Shader* shader_ {};
 
     std::vector<Object> objects_;
 

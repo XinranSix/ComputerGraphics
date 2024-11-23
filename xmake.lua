@@ -5,13 +5,9 @@ add_rules("mode.debug", "mode.release")
 
 set_languages("c++23")
 
-if is_plat("windows") then
-    add_cxflags("/utf-8")
-end
+set_encodings("utf-8")
 
--- add_defines("IMGUI_DEFINE_MATH_OPERATORS")
-
--- includes("core")
+includes("core")
 includes("test")
 includes("example")
 
@@ -21,6 +17,7 @@ add_requires("glad")
 add_requires("opengl") 
 add_requires("glm")
 add_requires("wxwidgets")
+add_requires("sfml")
 add_requires("glew")
 
 -- image loader
@@ -87,8 +84,4 @@ add_requires("im3d")
 -- network
 add_requires("cinatra") 
 
--- xmake project -k compile_commands
--- xmake project -k makefile
--- xmake project -k cmakelists
 -- xmake project -k vsxmake -m "debug,release"
-

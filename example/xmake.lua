@@ -6,4 +6,5 @@ includes("blackhole")
 includes("non_photorealistic_rendering")
 includes("shader_toy")
 includes("chess_910")
+includes("particle_simulation")
 
